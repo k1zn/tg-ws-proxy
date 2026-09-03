@@ -2,7 +2,7 @@
 # Install tg-ws-proxy under Entware. Run as root on the router.
 #
 # Layout:
-#   /opt/tg-ws-proxy/{proxy,utils}      <- code (only headless packages)
+#   /opt/tg-ws-proxy/proxy              <- code (headless package only)
 #   /opt/etc/tg-ws-proxy.conf           <- user config
 #   /opt/etc/init.d/S99tgwsproxy        <- service
 #   /opt/var/log/tg-ws-proxy.log        <- log
@@ -22,6 +22,10 @@ opkg update >/dev/null
 opkg install python3 python3-light python3-asyncio python3-logging \
              python3-urllib python3-codecs python3-ctypes \
              libopenssl ca-certificates ca-bundle
+
+# Optional: certifi CA bundle used by the GitHub domain refresher. The code
+# falls back to the system ca-bundle above when it is absent, so ignore errors.
+opkg install python3-certifi 2>/dev/null || true
 
 echo "[*] Copying code to $DST ..."
 mkdir -p "$DST"

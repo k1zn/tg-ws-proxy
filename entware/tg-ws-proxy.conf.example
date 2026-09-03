@@ -12,5 +12,6 @@ POOL_SIZE=1
 # Optional Fake-TLS masking (ee-secret). Example: FAKE_TLS_DOMAIN=www.cloudflare.com
 FAKE_TLS_DOMAIN=
 
-# Anything extra to pass to proxy.tg_ws_proxy, e.g. --no-cfproxy or -v
+# Anything extra to pass to proxy.tg_ws_proxy, e.g. --no-cfproxy, -v,
+# or --cfproxy-worker-domain your-worker.example.workers.dev
 EXTRA_ARGS=
