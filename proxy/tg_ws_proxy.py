@@ -734,11 +734,17 @@ def main():
     root.addHandler(console)
 
     if args.log_file:
-        from utils.logging_setup import build_log_handler
-        fh = build_log_handler(
+        # Inlined from upstream utils/logging_setup.py (that package is not
+        # shipped in the headless Entware fork). A RotatingFileHandler only
+        # rotates when backupCount >= 1, so clamp to at least one backup and
+        # keep a small maxBytes floor (issue #885).
+        max_bytes = max(32 * 1024, int(args.log_max_mb * 1024 * 1024))
+        backup_count = max(1, int(args.log_backups))
+        fh = logging.handlers.RotatingFileHandler(
             args.log_file,
-            log_max_mb=args.log_max_mb,
-            backups=args.log_backups,
+            maxBytes=max_bytes,
+            backupCount=backup_count,
+            encoding='utf-8',
         )
         fh.setFormatter(log_fmt)
         root.addHandler(fh)
